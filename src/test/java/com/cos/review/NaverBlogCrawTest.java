@@ -1,6 +1,8 @@
 package com.cos.review;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
+import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
 
 import com.cos.review.model.Product;
 
@@ -18,6 +21,42 @@ import com.cos.review.model.Product;
 public class NaverBlogCrawTest {
 
 	@Test
+	public void 날짜_파싱() {
+		
+		String today = LocalDate.now().toString();
+		System.out.println(today);
+		
+		String date1 = "2일 전";
+		if(date1.contains("일 전")) {
+			char minusDay = date1.charAt(0);
+			String date1Temp = 
+					LocalDate.now().minusDays(Integer.parseInt(minusDay+"")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			System.out.println(date1Temp);
+		}
+		String date2 = "2시간 전";
+		if(date2.contains("시간 전")) {
+			String date2Temp = 
+					LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			System.out.println(date2Temp);
+		}
+		
+		String date3 = "어제";
+		if(date3.contains("어제")) {
+			String date3Temp = 
+					LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			System.out.println(date3Temp);
+		}
+		
+		String date4 = "2020.08.01.";
+		char date4End = date4.charAt(date4.length()-1);
+		if(date4End == '.') {
+			String date4Temp = date4.substring(0, date4.length()-1);
+			date4Temp = date4Temp.replace(".", "-");
+			System.out.println(date4Temp);
+		}
+	}
+	
+	//@Test
 	public void 제품리뷰_블로그_크롤링() {
 		int start = 1; //10씩 증가하면 됨.
 		List<Product> products = new ArrayList<>();
@@ -46,15 +85,6 @@ public class NaverBlogCrawTest {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	
-		}
-		
-		for (Product product : products) {
-			System.out.println("===========================");
-			System.out.println("제목 : "+product.getTitle());
-			System.out.println("주소 : "+product.getBlogUrl());
-			System.out.println("섬네일 : "+product.getThumnail());
-			System.out.println("날짜 : "+product.getDay());
-			System.out.println();
 		}
 	}
 }
