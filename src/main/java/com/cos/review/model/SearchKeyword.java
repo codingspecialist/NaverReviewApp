@@ -1,9 +1,14 @@
 package com.cos.review.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +25,7 @@ public class SearchKeyword {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String keyword;
+	
+	@OneToMany(mappedBy = "keyword", orphanRemoval = true)
+	private List<Product> products;
 }

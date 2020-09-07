@@ -17,6 +17,12 @@ import com.cos.review.model.Product;
 // 섬네일, 블로그주소, 제목, 날짜
 public class NaverBlogCrawTest {
 
+	@Test
+	public void 로컬데이트_테스트() {
+		String today = LocalDate.now().toString();
+		System.out.println(today);
+	}
+	
 	//@Test
 	public void 날짜_파싱() {
 		
